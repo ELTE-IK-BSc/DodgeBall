@@ -11,7 +11,7 @@ Létrehozza a labdát, elhelyezve azt a terem bármely pontján.
 Létrehozza és elindítja a játékosokat. (‘A’-tól kezdve legyenek elnevezve!)
 Amíg több, mint egy játékos van játékban, megfelelő időközönként (emlékeztetőül: 50 ms) kirajzoltatja a terem állapotát.
 Amint csak egy játékos marad, kiírja a győztes betűjelét, majd őt is leállítja.
-Room: a játékosok és a labda helyzetét ábrázolja.
+`Room`: a játékosok és a labda helyzetét ábrázolja.
 
 Tartalmazza a szélességét és a hosszúságát, amit a konstruktor paramétereként kell átadni.
 Tárol egy objektumokból álló mátrixot, amelyben azt tartjuk nyilván, hogy az adott pozíción játékos van, labda, vagy semmi sincs.
@@ -26,7 +26,7 @@ Le lehet kérdezni a labda pozícióját.
 El lehet helyezni egy objektumot egy adott pozícióra. (Nem ennek az osztálynak a feladata annak ellenőrzése, hogy az adott pozíció üres-e.) Ha az objektum játékos, akkor növekszik az aktív játékosok száma.
 Át lehet mozgatni egy objektumot egyik pozícióról egy másikra. (Nem ennek az osztálynak a feladata annak ellenőrzése, hogy az új pozíció üres-e.)
 El lehet távolítani egy objektumot egy adott pozícióról. Ha az objektum játékos, akkor csökken az aktív játékosok száma.
-Player: egy játékos viselkedését szimuláló szál.
+`Player`: egy játékos viselkedését szimuláló szál.
 
 Tartalmaz egy konstanst, amely meghatározza, hogy két mozgás között mennyit kell várnia. Ez legyen 100 ms.
 Tárol egy referenciát a teremre.
@@ -45,7 +45,7 @@ Dobás után ha tud, lép még egyet a dobás irányával ellentétben.
 Ha a játékos már nem aktív (kidobták, vagy győzött), akkor távolítsa el magát a teremből.
 Van egy metódus, amelyet a labda hív meg, amikor kidobják a játékost, valamint ugyanezt használhatja a főprogram is, hogy a győztest leállítsa.
 Érdemes toString() metódust is átírni, hogy a játékos nevét írja ki, megkönnyítve a terem kirajzoló metódusát.
-Ball: a labda mozgást szimuláló szál.
+`Ball`: a labda mozgást szimuláló szál.
 
 Tartalmaz egy konstanst, amely meghatározza, hogy két lépés között mennyit kell várnia. Ez legyen 50 ms.
 Tárol egy referenciát a teremre.
@@ -63,6 +63,6 @@ Ellenkező esetben a labda elmozdul a teremben.
 Van egy metódus, aminek segítségével el lehet dobni a labdát egy adott irányba. Ez a metódus annyit csinál, hogy beállítja a mozgás irányát jelző adattagokat.
 Egy másik metódussal lekérdezhető, hogy mozgásban van-e a labda.
 Érdemes toString() metódust is átírni, hogy egy o karaktert írjon ki, megkönnyítve a terem kirajzoló metódusát.
-Empty: üres mező
+`Empty`: üres mező
 
 Ez az osztály csak azért jobb, mint a sima Object(), mert át tudjuk írni a toString() metódusát, hogy egy szóközt írjon ki.
