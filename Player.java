@@ -60,25 +60,25 @@ public class Player extends Thread {
       if (room.getObject(xCor + 1, yCor + 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor + 1, yCor + 1);
         if (!ball.inMovement()) {
-          this.throwBallto(ball, xCor, yCor);
+          this.throwBallto(ball, 1, 1);
         }
       }
       if (room.getObject(xCor - 1, yCor - 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor - 1, yCor - 1);
         if (!ball.inMovement()) {
-          this.throwBallto(ball, xCor, yCor);
+          this.throwBallto(ball, -1, -1);
         }
       }
       if (room.getObject(xCor - 1, yCor + 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor - 1, yCor + 1);
         if (!ball.inMovement()) {
-          this.throwBallto(ball, xCor, yCor);
+          this.throwBallto(ball, -1, 1);
         }
       }
       if (room.getObject(xCor + 1, yCor - 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor + 1, yCor - 1);
         if (!ball.inMovement()) {
-          this.throwBallto(ball, xCor, yCor);
+          this.throwBallto(ball, 1, -1);
         }
       }
     }
@@ -88,18 +88,17 @@ public class Player extends Thread {
   private synchronized void throwBallto(Ball ball, int x, int y) {
     ArrayList<Integer> axisX = new ArrayList<Integer>();
     ArrayList<Integer> axisY = new ArrayList<Integer>();
-    for (int i = x - 1; i <= x + 1; i++) {
+    for (int i = -1; i <= 1; i++) {
       axisX.add(i);
+      axisY.add(i);
     }
-    for (int j = y - 1; j <= y + 1; j++) {
-      axisY.add(j);
-    }
+
     Collections.shuffle(axisX);
     Collections.shuffle(axisY);
 
     int dirX = axisX.get(0);
     int dirY = axisY.get(0);
-    while ((dirX != x && dirY != y) || (dirX == x && dirY == y - 1)) {
+    while ((dirX != 0 && dirY != 0) || (dirX == x * (-1) && dirY == y * (-1))) {
       Collections.shuffle(axisX);
       Collections.shuffle(axisY);
 
