@@ -82,7 +82,7 @@ public class Room {
   }
 
   public synchronized void removeObject(int x, int y, Object object) {
-    matrix[x][y] = object;
+    matrix[x][y] = new Empty();
     if (object instanceof Player) {
       curentPlayrsNum--;
     }
