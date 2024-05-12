@@ -57,28 +57,36 @@ public class Player extends Thread {
       xCor = randomX;
       yCor = randomY;
 
-      if (room.getObject(xCor + 1, yCor + 1) instanceof Ball) {
-        Ball ball = (Ball) room.getObject(xCor + 1, yCor + 1);
-        if (!ball.inMovement()) {
-          this.throwBallto(ball, 1, 1);
+      ArrayList<Integer> axisX = new ArrayList<Integer>();
+      ArrayList<Integer> axisY = new ArrayList<Integer>();
+      for (int i = -1; i <= 1; i++) {
+        if (i == 0) {
+          continue;
         }
+        axisX.add(i);
+        axisY.add(i);
       }
-      if (room.getObject(xCor - 1, yCor - 1) instanceof Ball) {
-        Ball ball = (Ball) room.getObject(xCor - 1, yCor - 1);
-        if (!ball.inMovement()) {
-          this.throwBallto(ball, -1, -1);
-        }
-      }
-      if (room.getObject(xCor - 1, yCor + 1) instanceof Ball) {
-        Ball ball = (Ball) room.getObject(xCor - 1, yCor + 1);
-        if (!ball.inMovement()) {
-          this.throwBallto(ball, -1, 1);
-        }
-      }
-      if (room.getObject(xCor + 1, yCor - 1) instanceof Ball) {
-        Ball ball = (Ball) room.getObject(xCor + 1, yCor - 1);
-        if (!ball.inMovement()) {
-          this.throwBallto(ball, 1, -1);
+
+      for (Integer dirx : axisX) {
+        for (Integer diry : axisY) {
+          if (
+            xCor + dirx < 0 ||
+            xCor + dirx > 4 ||
+            yCor + diry < 0 ||
+            yCor + diry > 4
+          ) {
+            continue;
+          }
+          Object object = room.getObject(xCor + dirx, yCor + diry);
+          synchronized (object) {
+            if (object instanceof Ball) {
+              Ball ball = (Ball) object;
+              if (!ball.inMovement()) {
+                this.throwBallto(ball, dirx, diry);
+                break;
+              }
+            }
+          }
         }
       }
     }
