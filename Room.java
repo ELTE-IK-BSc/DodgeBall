@@ -1,4 +1,12 @@
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 public class Room {
+
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
+  private final Lock readLock = lock.readLock();
+  private final Lock writeLock = lock.writeLock();
 
   private int width;
   private int height;
@@ -17,11 +25,21 @@ public class Room {
   }
 
   public int getWidth() {
-    return this.width;
+    readLock.lock();
+    try {
+      return this.width;
+    } finally {
+      readLock.unlock();
+    }
   }
 
   public int getHeight() {
-    return this.height;
+    readLock.lock();
+    try {
+      return this.height;
+    } finally {
+      readLock.unlock();
+    }
   }
 
   public synchronized void printRoom() {
@@ -53,41 +71,66 @@ public class Room {
     }
   }
 
-  public synchronized Object getObject(int x, int y) {
+  public Object getObject(int x, int y) {
     if (x >= 0 && x < 5 && y >= 0 && y < 5) {
-      return matrix[x][y];
+      readLock.lock();
+      try {
+        return matrix[x][y];
+      } finally {
+        readLock.unlock();
+      }
     }
     return null;
   }
 
   public synchronized int getCurentPlayrsNum() {
-    return curentPlayrsNum;
-  }
-
-  public synchronized void addObject(int x, int y, Object object) {
-    matrix[x][y] = object;
-    if (object instanceof Player) {
-      curentPlayrsNum++;
+    readLock.lock();
+    try {
+      return curentPlayrsNum;
+    } finally {
+      readLock.unlock();
     }
   }
 
-  public synchronized void replaceObject(
+  public void addObject(int x, int y, Object object) {
+    writeLock.lock();
+    try {
+      matrix[x][y] = object;
+      if (object instanceof Player) {
+        curentPlayrsNum++;
+      }
+    } finally {
+      writeLock.unlock();
+    }
+  }
+
+  public void replaceObject(
     int fromx,
     int fromy,
     int tox,
     int toy,
     Object object
   ) {
-    matrix[fromx][fromy] = new Empty();
-    matrix[tox][toy] = object;
+    writeLock.lock();
+    try {
+      matrix[fromx][fromy] = new Empty();
+      matrix[tox][toy] = object;
+    } finally {
+      writeLock.unlock();
+    }
   }
 
-  public synchronized void removeObject(int x, int y, Object object) {
-    if (matrix[x][y] == object) {
-      matrix[x][y] = new Empty();
-      if (object instanceof Player) {
-        curentPlayrsNum--;
+  public void removeObject(int x, int y, Object object) {
+    writeLock.lock();
+    try {
+      if (matrix[x][y] == object) {
+        matrix[x][y] = new Empty();
+        if (object instanceof Player) {
+          curentPlayrsNum--;
+        }
       }
+    } finally {
+      writeLock.unlock();
     }
   }
 }

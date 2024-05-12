@@ -1,8 +1,14 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Player extends Thread {
+
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
+  private final Lock writeLock = lock.writeLock();
 
   private String name;
   private Room room;
@@ -118,8 +124,13 @@ public class Player extends Thread {
     ball.throwBall(dirX, dirY);
   }
 
-  public synchronized void gameEnd() {
-    this.active = false;
+  public void gameEnd() {
+    writeLock.lock();
+    try {
+      this.active = false;
+    } finally {
+      writeLock.unlock();
+    }
   }
 
   @Override

@@ -1,4 +1,12 @@
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 public class Ball extends Thread {
+
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
+  private final Lock readLock = lock.readLock();
+  private final Lock writeLock = lock.writeLock();
 
   public int waitms = 50;
   private Room room;
@@ -18,12 +26,22 @@ public class Ball extends Thread {
   }
 
   public synchronized boolean inMovement() {
-    return !(this.dirxCor == 0 && this.diryCor == 0);
+    readLock.lock();
+    try {
+      return !(this.dirxCor == 0 && this.diryCor == 0);
+    } finally {
+      readLock.unlock();
+    }
   }
 
   public synchronized void throwBall(int x, int y) {
-    this.dirxCor = x;
-    this.diryCor = y;
+    writeLock.lock();
+    try {
+      this.dirxCor = x;
+      this.diryCor = y;
+    } finally {
+      writeLock.unlock();
+    }
   }
 
   @Override
