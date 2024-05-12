@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Player extends Thread {
@@ -84,7 +86,28 @@ public class Player extends Thread {
   }
 
   private synchronized void throwBallto(Ball ball, int x, int y) {
-    ball.throwBall(2, 2);
+    ArrayList<Integer> axisX = new ArrayList<Integer>();
+    ArrayList<Integer> axisY = new ArrayList<Integer>();
+    for (int i = x - 1; i <= x + 1; i++) {
+      axisX.add(i);
+    }
+    for (int j = y - 1; j <= y + 1; j++) {
+      axisY.add(j);
+    }
+    Collections.shuffle(axisX);
+    Collections.shuffle(axisY);
+
+    int dirX = axisX.get(0);
+    int dirY = axisY.get(0);
+    while ((dirX != x && dirY != y) || (dirX == x && dirY == y - 1)) {
+      Collections.shuffle(axisX);
+      Collections.shuffle(axisY);
+
+      dirX = axisX.get(0);
+      dirY = axisY.get(0);
+    }
+
+    ball.throwBall(dirX, dirY);
   }
 
   public synchronized void gameEnd() {
