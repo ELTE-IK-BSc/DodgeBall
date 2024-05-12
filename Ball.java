@@ -18,7 +18,7 @@ public class Ball extends Thread {
   }
 
   public synchronized boolean inMovement() {
-    return !(dirxCor == 0 && diryCor == 0);
+    return !(this.dirxCor == 0 && this.diryCor == 0);
   }
 
   public synchronized void throwBall(int x, int y) {
@@ -34,24 +34,25 @@ public class Ball extends Thread {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      if (this.inMovement()) {
-        // stop at the walls
-        if (dirxCor < 0 && dirxCor > 4 && diryCor < 0 && diryCor > 4) {
-          this.dirxCor = 0;
-          this.diryCor = 0;
-        }
-        // dodge player
-        Object obj = room.getObject(dirxCor, diryCor);
-        if (obj instanceof Player) {
-          room.removeObject(dirxCor, diryCor, obj);
-          ((Player) obj).gameEnd();
-          this.dirxCor = 0;
-          this.diryCor = 0;
-        } else {
-          // move forward
-          this.dirxCor += 1;
-          this.diryCor += 1;
-        }
+      int newX = xCor + dirxCor;
+      int newY = yCor + diryCor;
+      // stop at the walls
+      if (this.inMovement() && (newX < 0 && newX > 4 && newY < 0 && newY > 4)) {
+        this.dirxCor = 0;
+        this.diryCor = 0;
+      }
+      // dodge player
+      Object obj = room.getObject(newX, newY);
+      if (this.inMovement() && obj instanceof Player) {
+        ((Player) obj).gameEnd();
+        this.dirxCor = 0;
+        this.diryCor = 0;
+      }
+      if (this.inMovement() && obj instanceof Empty) {
+        // move forward
+        room.replaceObject(xCor, yCor, newX, newY, this);
+        this.xCor += newX;
+        this.yCor += newY;
       }
     }
     room.removeObject(xCor, yCor, this);
