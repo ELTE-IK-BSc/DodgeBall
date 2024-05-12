@@ -18,7 +18,7 @@ public class Ball extends Thread {
   }
 
   public synchronized boolean inMovement() {
-    return (dirxCor != 0) && (diryCor != 0);
+    return !(dirxCor == 0 && diryCor == 0);
   }
 
   public synchronized void throwBall(int x, int y) {
