@@ -53,7 +53,10 @@ public class Room {
   }
 
   public synchronized Object getObject(int x, int y) {
-    return matrix[x][y];
+    if (x >= 0 && x < 5 && y >= 0 && y < 5) {
+      return matrix[x][y];
+    }
+    return null;
   }
 
   public synchronized int getCurentPlayrsNum() {
