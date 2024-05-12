@@ -22,6 +22,11 @@ public class Game {
       }
       room.printRoom();
     }
-    System.out.print("Gyoztes: ");
+
+    for (Object obj : room.matrix) {
+      if (obj instanceof Player) {
+        System.out.print("Gyoztes: " + obj.toString());
+      }
+    }
   }
 }
