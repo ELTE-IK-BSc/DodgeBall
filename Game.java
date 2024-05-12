@@ -23,10 +23,15 @@ public class Game {
       room.printRoom();
     }
 
-    for (Object obj : room.matrix) {
-      if (obj instanceof Player) {
-        System.out.print("Gyoztes: " + obj.toString());
+    for (int i = 0; i < dimW; i++) {
+      for (int j = 0; j < dimH; j++) {
+        Object obj = room.getObject(i, j);
+        if (obj instanceof Player) {
+          System.out.println("Winner: " + obj.toString());
+          ((Player) obj).gameEnd();
+        }
       }
     }
+    System.out.print("G A M E   O V E R");
   }
 }
