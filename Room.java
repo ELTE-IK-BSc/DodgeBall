@@ -47,7 +47,8 @@ public class Room {
         for (int k = 0; k < this.width; k++) {
           System.out.print("-");
         }
-        System.out.print("+");
+        System.out.println("+");
+        System.out.println("Players: " + getCurentPlayrsNum());
       }
     }
   }
@@ -82,9 +83,11 @@ public class Room {
   }
 
   public synchronized void removeObject(int x, int y, Object object) {
-    matrix[x][y] = new Empty();
-    if (object instanceof Player) {
-      curentPlayrsNum--;
+    if (matrix[x][y] == object) {
+      matrix[x][y] = new Empty();
+      if (object instanceof Player) {
+        curentPlayrsNum--;
+      }
     }
   }
 }
