@@ -30,7 +30,7 @@ public class Ball extends Thread {
   public void run() {
     while (this.room.getCurentPlayrsNum() > 1) {
       try {
-        this.sleep(waitms);
+        sleep(waitms);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }

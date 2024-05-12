@@ -30,7 +30,7 @@ public class Player extends Thread {
     }
     while (active) {
       try {
-        this.sleep(waitms);
+        sleep(waitms);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
