@@ -34,7 +34,25 @@ public class Ball extends Thread {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      if (this.inMovement()) {}
+      if (this.inMovement()) {
+        // stop at the walls
+        if (dirxCor < 0 && dirxCor > 4 && diryCor < 0 && diryCor > 4) {
+          this.dirxCor = 0;
+          this.diryCor = 0;
+        }
+        // dodge player
+        Object obj = room.getObject(dirxCor, diryCor);
+        if (obj instanceof Player) {
+          room.removeObject(dirxCor, diryCor, obj);
+          ((Player) obj).gameEnd();
+          this.dirxCor = 0;
+          this.diryCor = 0;
+        } else {
+          // move forward
+          this.dirxCor += 1;
+          this.diryCor += 1;
+        }
+      }
     }
     room.removeObject(xCor, yCor, this);
   }
