@@ -58,36 +58,36 @@ public class Player extends Thread {
       if (room.getObject(xCor + 1, yCor + 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor + 1, yCor + 1);
         if (!ball.inMovement()) {
-          ball.throwBall(2, 2);
+          this.throwBallto(ball, xCor, yCor);
         }
       }
       if (room.getObject(xCor - 1, yCor - 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor - 1, yCor - 1);
         if (!ball.inMovement()) {
-          ball.throwBall(2, 2);
+          this.throwBallto(ball, xCor, yCor);
         }
       }
       if (room.getObject(xCor - 1, yCor + 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor - 1, yCor + 1);
         if (!ball.inMovement()) {
-          ball.throwBall(2, 2);
+          this.throwBallto(ball, xCor, yCor);
         }
       }
       if (room.getObject(xCor + 1, yCor - 1) instanceof Ball) {
         Ball ball = (Ball) room.getObject(xCor + 1, yCor - 1);
         if (!ball.inMovement()) {
-          ball.throwBall(2, 2);
+          this.throwBallto(ball, xCor, yCor);
         }
       }
     }
     room.removeObject(xCor, yCor, this);
   }
 
-  private void throwBallto(Ball ball, int x, int y) {
+  private synchronized void throwBallto(Ball ball, int x, int y) {
     ball.throwBall(2, 2);
   }
 
-  public void gameEnd() {
+  public synchronized void gameEnd() {
     this.active = false;
   }
 

@@ -12,14 +12,16 @@ public class Ball extends Thread {
     this.xCor = xCor;
     this.yCor = yCor;
     this.room = room;
+    this.dirxCor = 0;
+    this.diryCor = 0;
     room.addObject(xCor, yCor, this);
   }
 
-  public boolean inMovement() {
-    return false;
+  public synchronized boolean inMovement() {
+    return (dirxCor != 0) && (diryCor != 0);
   }
 
-  public void throwBall(int x, int y) {
+  public synchronized void throwBall(int x, int y) {
     this.dirxCor = x;
     this.diryCor = y;
   }
@@ -32,10 +34,7 @@ public class Ball extends Thread {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      if (this.inMovement()) {
-
-        
-      }
+      if (this.inMovement()) {}
     }
     room.removeObject(xCor, yCor, this);
   }
