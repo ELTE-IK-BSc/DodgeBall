@@ -37,7 +37,7 @@ public class Ball extends Thread {
       int newX = xCor + dirxCor;
       int newY = yCor + diryCor;
       // stop at the walls
-      if (this.inMovement() && (newX < 0 && newX > 4 && newY < 0 && newY > 4)) {
+      if (this.inMovement() && (newX < 0 || newX > 4 || newY < 0 || newY > 4)) {
         this.dirxCor = 0;
         this.diryCor = 0;
       }
@@ -47,12 +47,11 @@ public class Ball extends Thread {
         ((Player) obj).gameEnd();
         this.dirxCor = 0;
         this.diryCor = 0;
-      }
-      if (this.inMovement() && obj instanceof Empty) {
+      } else if (this.inMovement()) {
         // move forward
         room.replaceObject(xCor, yCor, newX, newY, this);
-        this.xCor += newX;
-        this.yCor += newY;
+        this.xCor = newX;
+        this.yCor = newY;
       }
     }
     room.removeObject(xCor, yCor, this);
