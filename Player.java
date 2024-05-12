@@ -49,6 +49,7 @@ public class Player extends Thread {
       ) {
         continue;
       }
+
       if (!(room.getObject(randomX, randomY) instanceof Empty)) {
         continue;
       }
