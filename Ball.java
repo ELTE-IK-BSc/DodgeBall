@@ -42,16 +42,20 @@ public class Ball extends Thread {
         this.diryCor = 0;
       }
       // dodge player
-      Object obj = room.getObject(newX, newY);
-      if (this.inMovement() && obj instanceof Player) {
-        ((Player) obj).gameEnd();
-        this.dirxCor = 0;
-        this.diryCor = 0;
-      } else if (this.inMovement()) {
-        // move forward
-        room.replaceObject(xCor, yCor, newX, newY, this);
-        this.xCor = newX;
-        this.yCor = newY;
+      if (this.inMovement()) {
+        Object obj = room.getObject(newX, newY);
+        synchronized (obj) {
+          if (obj instanceof Player) {
+            ((Player) obj).gameEnd();
+            this.dirxCor = 0;
+            this.diryCor = 0;
+          } else {
+            // move forward
+            room.replaceObject(xCor, yCor, newX, newY, this);
+            this.xCor = newX;
+            this.yCor = newY;
+          }
+        }
       }
     }
     room.removeObject(xCor, yCor, this);
